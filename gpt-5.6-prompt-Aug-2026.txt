@@ -1,0 +1,39 @@
+Le point important est que le beau résultat ne venait pas d’une simple commande « convertir le Markdown en PDF ». 
+J’ai fait une vraie mise en page programmatique.
+
+Pour ton PDF du projet BOM/Gross Needs, le processus était essentiellement :
+J’ai pris le document Markdown comme source.
+Je l’ai transformé en éléments de mise en page : titres, paragraphes, tableaux, encadrés, blocs SQL, etc.
+
+J’ai généré le PDF en Python, principalement avec ReportLab.
+J’ai ajouté :
+format A4 et marges régulières ;
+hiérarchie typographique des titres ;
+couleurs cohérentes ;
+page de garde ;
+résumé exécutif bien visible ;
+sommaire ;
+en-têtes/pieds de page et numéros de page ;
+tableaux spécialement formatés ;
+police monospace et fond différent pour le SQL ;
+gestion des sauts de page pour éviter qu'un titre ou un tableau soit coupé n'importe où.
+Et surtout, après génération, j’ai transformé les 27 pages du PDF en images avec Poppler (pdftoppm) et je les ai contrôlées visuellement. C’est comme cela que j’ai pu vérifier qu’aucun tableau, code SQL ou accent ne débordait. C’est d’ailleurs le workflow recommandé par l’outil PDF que j’ai utilisé. ChatGPT Work prend officiellement en charge la création et la vérification de PDF. Documentation OpenAI⁠�
+La chaîne est donc simplement :
+Markdown → Python/ReportLab → PDF → pages PNG → contrôle → corrections → PDF final
+Si tu veux le faire toi-même
+Comme tu m’avais dit que Python est déjà installé sur ton PC Airbus, tu pourrais utiliser exactement la même approche, sans avoir besoin de droits administrateur.
+Par exemple :
+python -m pip install --user reportlab pypdf pdfplumber
+Puis avoir quelque chose comme :
+mon_projet/
+├── document.md
+├── make_pdf.py
+└── output/
+    └── document.pdf
+et simplement lancer :
+python make_pdf.py document.md
+Le script make_pdf.py peut contenir toute la charte graphique une seule fois. Après cela, tu modifies uniquement ton Markdown et tu recrées le beau PDF quand tu veux.
+En fait, pour ton projet Airbus, je pense que c’est une excellente solution : on pourrait fabriquer ensemble un petit générateur réutilisable qui reproduit presque exactement le style du PDF que je t’ai fait. Tu aurais ensuite seulement à faire :
+python make_pdf.py document_principal.md
+et il te ressortirait automatiquement le PDF mis à jour, avec sommaire, pagination, tableaux et SQL formatés.
+Si tu veux, je peux te préparer ce générateur complet prêt à télécharger pour ton PC Airbus.
